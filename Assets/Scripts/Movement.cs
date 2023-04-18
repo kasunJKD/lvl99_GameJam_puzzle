@@ -38,8 +38,8 @@ public class Movement : MonoBehaviour
 
    
 
-    [SerializeField]
-    float maxFallCastDistance = 100f;
+    // [SerializeField]
+    // float maxFallCastDistance = 100f;
     [SerializeField]
     float fallSpeed = 30f;
     bool falling;
@@ -51,6 +51,11 @@ public class Movement : MonoBehaviour
 
     [SerializeField]
     LayerMask moveableLayer;
+
+    bool playerTurned_w = false;
+    bool playerTurned_a = false;
+    bool playerTurned_s = false;
+    bool playerTurned_d = false;
 
     private void Start() {
         objectmoveStatus = GetComponent<MoveStatus>();
@@ -150,29 +155,30 @@ public class Movement : MonoBehaviour
 
             transform.position += (targetPosition - startPosition) * moveSpeed * Time.deltaTime;
             return;
-        } else {
-            RaycastHit[] hits = Physics.RaycastAll(
-                    transform.position + Vector3.up * 0.5f,
-                    Vector3.down,
-                    maxFallCastDistance,
-                    walkableMask
-            );
+         } 
+        //else {
+        //     RaycastHit[] hits = Physics.RaycastAll(
+        //             transform.position + Vector3.up * 0.5f,
+        //             Vector3.down,
+        //             maxFallCastDistance,
+        //             walkableMask
+        //     );
 
-            if (hits.Length > 0) {
-                int topCollider = 0;
-                for (int i = 0; i < hits.Length; i++) {
-                    if (hits[topCollider].collider.bounds.max.y < hits[i].collider.bounds.max.y)
-                        topCollider = i;
-                }
-                if (hits[topCollider].distance > 1f) {
-                    targetFallHeight = transform.position.y - hits[topCollider].distance + 0.5f;
-                    falling = true;
-                }
-            } else {
-                targetFallHeight = -Mathf.Infinity;
-                falling = true;
-            }
-        }
+        //     if (hits.Length > 0) {
+        //         int topCollider = 0;
+        //         for (int i = 0; i < hits.Length; i++) {
+        //             if (hits[topCollider].collider.bounds.max.y < hits[i].collider.bounds.max.y)
+        //                 topCollider = i;
+        //         }
+        //         if (hits[topCollider].distance > 1f) {
+        //             targetFallHeight = transform.position.y - hits[topCollider].distance + 0.5f;
+        //             falling = true;
+        //         }
+        //     } else {
+        //         targetFallHeight = -Mathf.Infinity;
+        //         falling = true;
+        //     }
+        // }
 
         // Handle player input
         // Also handle moving up 1 level
@@ -192,12 +198,27 @@ public class Movement : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.W)) {
-            Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward);
-            transform.rotation = targetRotation; 
-            targetPosition = transform.position + cameraRotator.transform.forward * 2f;
-            startPosition = transform.position;
+            if (objectmoveStatus.isMovingObject) {
+                targetPosition = transform.position + cameraRotator.transform.forward * 2f;
+                startPosition = transform.position;
 
-            moving = true;
+                moving = true;
+            }
+            else if (playerTurned_w) {
+                targetPosition = transform.position + cameraRotator.transform.forward * 2f;
+                startPosition = transform.position;
+                moving = true;
+            }
+            else {
+                PlayerTurn(Vector3.forward, true, false, false, false);
+                // Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward);
+                // transform.rotation = targetRotation; 
+                // targetPosition = transform.position + cameraRotator.transform.forward * 2f;
+                // startPosition = transform.position;
+
+                //moving = true;
+            }
+           
             // if (CanMove(Vector3.forward)) {
 
             //     targetPosition = transform.position + cameraRotator.transform.forward * 2f;
@@ -206,22 +227,50 @@ public class Movement : MonoBehaviour
             //     moving = true;
             // }
         } else if (Input.GetKeyDown(KeyCode.S)) {
-            Quaternion targetRotation = Quaternion.LookRotation(Vector3.back);
-            transform.rotation = targetRotation; 
-            targetPosition = transform.position - cameraRotator.transform.forward * 2f;
-            startPosition = transform.position;
-            moving = true;
+            if (objectmoveStatus.isMovingObject) {
+                targetPosition = transform.position - cameraRotator.transform.forward * 2f;
+                startPosition = transform.position;
+                moving = true;
+            }
+            else if (playerTurned_s) {
+                targetPosition = transform.position - cameraRotator.transform.forward * 2f;
+                startPosition = transform.position;
+                moving = true;
+            }
+            else {
+                PlayerTurn(Vector3.back, false, false, true, false);
+                // Quaternion targetRotation = Quaternion.LookRotation(Vector3.back);
+                // transform.rotation = targetRotation; 
+                // targetPosition = transform.position - cameraRotator.transform.forward * 2f;
+                // startPosition = transform.position;
+                // moving = true;
+            }
+           
             // if (CanMove(Vector3.back)) {
             //     targetPosition = transform.position - cameraRotator.transform.forward * 2f;
             //     startPosition = transform.position;
             //     moving = true;
             // } 
         } else if (Input.GetKeyDown(KeyCode.A)) {
-            Quaternion targetRotation = Quaternion.LookRotation(Vector3.left);
-            transform.rotation = targetRotation; 
-            targetPosition = transform.position - cameraRotator.transform.right * 2f;
-            startPosition = transform.position;
-            moving = true;
+            if (objectmoveStatus.isMovingObject) {
+                targetPosition = transform.position - cameraRotator.transform.right * 2f;
+                startPosition = transform.position;
+                moving = true;
+            }
+            else if (playerTurned_a) {
+                targetPosition = transform.position - cameraRotator.transform.right * 2f;
+                startPosition = transform.position;
+                moving = true;
+            }
+            else {
+                PlayerTurn(Vector3.left, false, true, false, false);
+                // Quaternion targetRotation = Quaternion.LookRotation(Vector3.left);
+                // transform.rotation = targetRotation; 
+                // targetPosition = transform.position - cameraRotator.transform.right * 2f;
+                // startPosition = transform.position;
+                // moving = true;
+            }
+           
             // if (CanMove(Vector3.left)) {
             //     targetPosition = transform.position - cameraRotator.transform.right * 2f;
             //     startPosition = transform.position;
@@ -229,11 +278,27 @@ public class Movement : MonoBehaviour
             // } 
             
         } else if (Input.GetKeyDown(KeyCode.D)) {
-            Quaternion targetRotation = Quaternion.LookRotation(Vector3.right);
-            transform.rotation = targetRotation; 
-            targetPosition = transform.position + cameraRotator.transform.right * 2f;
-            startPosition = transform.position;
-            moving = true;
+            if (objectmoveStatus.isMovingObject) {
+                targetPosition = transform.position + cameraRotator.transform.right * 2f;
+                startPosition = transform.position;
+                moving = true;
+            }
+            else if (playerTurned_d) {
+                targetPosition = transform.position + cameraRotator.transform.right * 2f;
+                startPosition = transform.position;
+                moving = true;
+            }
+            else {
+                PlayerTurn(Vector3.right, false, false, false, true);
+                // Quaternion targetRotation = Quaternion.LookRotation(Vector3.right);
+                // transform.rotation = targetRotation; 
+                // playerTurned_w = false;
+                // playerTurned_a = false;
+                // playerTurned_s = false;
+                // playerTurned_d = true;
+                
+            }
+            
             // if (CanMove(Vector3.right)) {
             //     targetPosition = transform.position + cameraRotator.transform.right * 2f;
             //     startPosition = transform.position;
@@ -244,7 +309,7 @@ public class Movement : MonoBehaviour
         if (objectmoveStatus.isMovingObject == false)
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position + Vector3.up, transform.forward, out hit, 3.0f, moveableLayer))
+            if (Physics.Raycast(transform.position + Vector3.up, transform.forward, out hit, 2.0f, moveableLayer))
             {
                 GameObject hitObject = hit.collider.gameObject;
                 if (hitObject.CompareTag("Moveobj"))
@@ -352,19 +417,33 @@ public class Movement : MonoBehaviour
         return false;
     }
 
-    void OnCollisionEnter(Collision other) {
-        if (falling && (1 << other.gameObject.layer & walkableMask) == 0) {
-            // Find a nearby vacant square to push us on to
-            Vector3 direction = Vector3.zero;
-            Vector3[] directions = { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
-            for (int i = 0; i < 4; i++) {
-                if (Physics.OverlapSphere(transform.position + directions[i], 0.1f).Length == 0) {
-                    direction = directions[i];
-                    break;
-                }
-            }
-            transform.position += direction;
-        }
+    void PlayerTurn (Vector3 direction, bool w, bool a, bool s, bool d) {
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = targetRotation * cameraRotator.transform.rotation;
+        playerTurned_w = w;
+        playerTurned_a = a;
+        playerTurned_s = s;
+        playerTurned_d = d; 
     }
+
+    // void OnCollisionEnter(Collision other) {
+    //     Debug.Log("colision");
+    //     if (!falling && (1 << other.gameObject.layer & walkableMask) == 0) {
+    //         // Find a nearby vacant square to push us on to
+    //         // Vector3 direction = Vector3.zero;
+    //         // Vector3[] directions = { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
+    //         // for (int i = 0; i < 4; i++) {
+    //         //     if (Physics.OverlapSphere(transform.position + directions[i], 0.1f).Length == 0) {
+    //         //         direction = directions[i];
+    //         //         break;
+    //         //     }
+    //         // }
+    //         transform.position = transform.position;
+    //         // Vector3 direction = (transform.position - other.transform.position).normalized;
+    //         // transform.position += direction * 0.1f;
+    //     }else {
+    //         transform.position = transform.position;
+    //     }
+    // }
 
 }
