@@ -36,12 +36,26 @@ public class Movement : MonoBehaviour
     [SerializeField]
     LayerMask collidableMask = 0;
 
+   
+
     [SerializeField]
     float maxFallCastDistance = 100f;
     [SerializeField]
     float fallSpeed = 30f;
     bool falling;
     float targetFallHeight;
+
+    private MoveStatus objectmoveStatus;
+
+    private GameObject selectedObject;
+
+    [SerializeField]
+    LayerMask moveableLayer;
+
+    private void Start() {
+        objectmoveStatus = GetComponent<MoveStatus>();
+    }
+
 
     void Update() {
 
@@ -103,6 +117,9 @@ public class Movement : MonoBehaviour
                 Color.red,
                 Time.deltaTime);
 
+        // Debug raycast line
+        Debug.DrawLine(transform.position + Vector3.up, transform.position  + Vector3.up + transform.forward * rayLength, Color.red, Time.deltaTime);
+
         if (falling) {
             if (transform.position.y <= targetFallHeight) {
                 float x = Mathf.Round(transform.position.x);
@@ -159,46 +176,105 @@ public class Movement : MonoBehaviour
 
         // Handle player input
         // Also handle moving up 1 level
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (selectedObject != null && !objectmoveStatus.isMovingObject)
+            {
+                objectmoveStatus.isMovingObject = true;
+
+            }
+            else if (selectedObject != null && objectmoveStatus.isMovingObject)
+            {
+                objectmoveStatus.isMovingObject = false;
+               // Transform objectTransform = GetComponent<Transform>();
+               // transform.DetachChildren();
+            }
+        }
 
         if (Input.GetKeyDown(KeyCode.W)) {
-            if (CanMove(Vector3.forward)) {
-                targetPosition = transform.position + cameraRotator.transform.forward;
-                startPosition = transform.position;
-                moving = true;
-            } else if (CanMoveUp(Vector3.forward)) {
-                targetPosition = transform.position + cameraRotator.transform.forward + Vector3.up;
-                startPosition = transform.position;
-                moving = true;
-            }
+            Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward);
+            transform.rotation = targetRotation; 
+            targetPosition = transform.position + cameraRotator.transform.forward * 2f;
+            startPosition = transform.position;
+
+            moving = true;
+            // if (CanMove(Vector3.forward)) {
+
+            //     targetPosition = transform.position + cameraRotator.transform.forward * 2f;
+            //     startPosition = transform.position;
+
+            //     moving = true;
+            // }
         } else if (Input.GetKeyDown(KeyCode.S)) {
-            if (CanMove(Vector3.back)) {
-                targetPosition = transform.position - cameraRotator.transform.forward;
-                startPosition = transform.position;
-                moving = true;
-            } else if (CanMoveUp(Vector3.back)) {
-                targetPosition = transform.position - cameraRotator.transform.forward + Vector3.up;
-                startPosition = transform.position;
-                moving = true;
-            }
+            Quaternion targetRotation = Quaternion.LookRotation(Vector3.back);
+            transform.rotation = targetRotation; 
+            targetPosition = transform.position - cameraRotator.transform.forward * 2f;
+            startPosition = transform.position;
+            moving = true;
+            // if (CanMove(Vector3.back)) {
+            //     targetPosition = transform.position - cameraRotator.transform.forward * 2f;
+            //     startPosition = transform.position;
+            //     moving = true;
+            // } 
         } else if (Input.GetKeyDown(KeyCode.A)) {
-            if (CanMove(Vector3.left)) {
-                targetPosition = transform.position - cameraRotator.transform.right;
-                startPosition = transform.position;
-                moving = true;
-            } else if (CanMoveUp(Vector3.left)) {
-                targetPosition = transform.position - cameraRotator.transform.right + Vector3.up;
-                startPosition = transform.position;
-                moving = true;
-            }
+            Quaternion targetRotation = Quaternion.LookRotation(Vector3.left);
+            transform.rotation = targetRotation; 
+            targetPosition = transform.position - cameraRotator.transform.right * 2f;
+            startPosition = transform.position;
+            moving = true;
+            // if (CanMove(Vector3.left)) {
+            //     targetPosition = transform.position - cameraRotator.transform.right * 2f;
+            //     startPosition = transform.position;
+            //     moving = true;
+            // } 
+            
         } else if (Input.GetKeyDown(KeyCode.D)) {
-            if (CanMove(Vector3.right)) {
-                targetPosition = transform.position + cameraRotator.transform.right;
-                startPosition = transform.position;
-                moving = true;
-            } else if (CanMoveUp(Vector3.right)) {
-                targetPosition = transform.position + cameraRotator.transform.right + Vector3.up;
-                startPosition = transform.position;
-                moving = true;
+            Quaternion targetRotation = Quaternion.LookRotation(Vector3.right);
+            transform.rotation = targetRotation; 
+            targetPosition = transform.position + cameraRotator.transform.right * 2f;
+            startPosition = transform.position;
+            moving = true;
+            // if (CanMove(Vector3.right)) {
+            //     targetPosition = transform.position + cameraRotator.transform.right * 2f;
+            //     startPosition = transform.position;
+            //     moving = true;
+            // }
+        }
+
+        if (objectmoveStatus.isMovingObject == false)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position + Vector3.up, transform.forward, out hit, 3.0f, moveableLayer))
+            {
+                GameObject hitObject = hit.collider.gameObject;
+                if (hitObject.CompareTag("Moveobj"))
+                {
+                    if (selectedObject != hitObject)
+                    {
+                        if (selectedObject != null)
+                        {
+                            selectedObject.GetComponent<Renderer>().material.color = Color.white;
+                        }
+                        selectedObject = hitObject;
+                        selectedObject.GetComponent<Renderer>().material.color = Color.red;
+                    }
+                }
+                else
+                {
+                    if (selectedObject != null)
+                    {
+                        selectedObject.GetComponent<Renderer>().material.color = Color.yellow;
+                        selectedObject = null;
+                    }
+                }
+            }
+            else
+            {
+                if (selectedObject != null)
+                {
+                    selectedObject.GetComponent<Renderer>().material.color = Color.green;
+                    selectedObject = null;
+                }
             }
         }
     }
@@ -206,15 +282,62 @@ public class Movement : MonoBehaviour
     // Check if the player can move
 
     bool CanMove(Vector3 direction) {
-        if (direction.z != 0) {
-            if (Physics.Raycast(zAxisOriginA, direction, rayLength)) return false;
-            if (Physics.Raycast(zAxisOriginB, direction, rayLength)) return false;
+        Debug.Log(objectmoveStatus.isMovingObject);
+        if (objectmoveStatus.isMovingObject) {
+            int layerToFind = 6; // Replace with the desired layer number
+            Transform childTransform = null;
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                Transform currentChild = transform.GetChild(i);
+                if (currentChild.gameObject.layer == layerToFind)
+                {
+                    childTransform = currentChild;
+                    break;
+                }
+            }
+
+            Vector3 directionToChild = childTransform.position;
+            Quaternion targetRotation = Quaternion.LookRotation(directionToChild);
+            transform.rotation = targetRotation;
+
+            // if (direction.z != 0) {
+            //     if (Physics.Raycast(zAxisOriginA, direction, 3.0f)) return false;
+            //     if (Physics.Raycast(zAxisOriginB, direction, 3.0f)) return false;         
+            // }
+            // else if (direction.x != 0) {
+            //     if (Physics.Raycast(xAxisOriginA, direction, rayLength)) return false;
+            //     if (Physics.Raycast(xAxisOriginB, direction, rayLength)) return false;
+            // }
+            return true;
+
+            // Quaternion targetRotation = Quaternion.LookRotation(direction);
+            // transform.rotation = targetRotation; 
+            // if (direction.z != 0) {
+            //     if (Physics.Raycast(zAxisOriginA, direction, rayLength)) return false;
+            //     if (Physics.Raycast(zAxisOriginB, direction, rayLength)) return false;         
+            // }
+            // else if (direction.x != 0) {
+            //     if (Physics.Raycast(xAxisOriginA, direction, rayLength)) return false;
+            //     if (Physics.Raycast(xAxisOriginB, direction, rayLength)) return false;
+            // }
+            // return true;
+
         }
-        else if (direction.x != 0) {
-            if (Physics.Raycast(xAxisOriginA, direction, rayLength)) return false;
-            if (Physics.Raycast(xAxisOriginB, direction, rayLength)) return false;
+        else {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = targetRotation; 
+            if (direction.z != 0) {
+                if (Physics.Raycast(zAxisOriginA, direction, rayLength)) return false;
+                if (Physics.Raycast(zAxisOriginB, direction, rayLength)) return false;         
+            }
+            else if (direction.x != 0) {
+                if (Physics.Raycast(xAxisOriginA, direction, rayLength)) return false;
+                if (Physics.Raycast(xAxisOriginB, direction, rayLength)) return false;
+            }
+            return true;
         }
-        return true;
+        
     }
 
     // Check if the player can step-up
@@ -243,4 +366,5 @@ public class Movement : MonoBehaviour
             transform.position += direction;
         }
     }
+
 }
