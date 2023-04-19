@@ -206,7 +206,10 @@ public class Movement : MonoBehaviour
             else if (playerTurned_w) {
                 targetPosition = transform.position + cameraRotator.transform.forward * 2f;
                 startPosition = transform.position;
-                moving = true;
+                if (CanMove(Vector3.forward)) {
+                    moving = true;
+                }
+                else moving = false;
             }
             else {
                 PlayerTurn(Vector3.forward, true, false, false, false);
@@ -234,7 +237,10 @@ public class Movement : MonoBehaviour
             else if (playerTurned_s) {
                 targetPosition = transform.position - cameraRotator.transform.forward * 2f;
                 startPosition = transform.position;
-                moving = true;
+                if (CanMove(Vector3.back)) {
+                    moving = true;
+                }
+                else moving = false;
             }
             else {
                 PlayerTurn(Vector3.back, false, false, true, false);
@@ -259,7 +265,10 @@ public class Movement : MonoBehaviour
             else if (playerTurned_a) {
                 targetPosition = transform.position - cameraRotator.transform.right * 2f;
                 startPosition = transform.position;
-                moving = true;
+                if (CanMove(Vector3.left)) {
+                    moving = true;
+                }
+                else moving = false;
             }
             else {
                 PlayerTurn(Vector3.left, false, true, false, false);
@@ -289,7 +298,11 @@ public class Movement : MonoBehaviour
 
                 targetPosition = transform.position + cameraRotator.transform.right * 2f;
                 startPosition = transform.position;
-                moving = true;
+                if (CanMove(Vector3.right)) {
+                    moving = true;
+                }
+                else moving = false;
+                
             }
             else {
                 PlayerTurn(Vector3.right, false, false, false, true);

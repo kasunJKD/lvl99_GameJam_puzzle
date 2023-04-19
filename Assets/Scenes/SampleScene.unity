@@ -946,7 +946,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 12
-  rayLength: 2.4
+  rayLength: 1.35
   rayOffsetX: 0.8
   rayOffsetY: 0.8
   rayOffsetZ: 0.8
