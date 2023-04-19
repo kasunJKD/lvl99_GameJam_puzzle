@@ -63,7 +63,6 @@ public class Movement : MonoBehaviour
 
 
     void Update() {
-
         // Set the ray positions every frame
 
         yOffset = transform.position + Vector3.up * rayOffsetY;
@@ -284,6 +283,10 @@ public class Movement : MonoBehaviour
                 moving = true;
             }
             else if (playerTurned_d) {
+                //pauseing with delta time *(need delta time to pause)
+                // Vector3 displacementVector = (targetPosition - startPosition) * Time.deltaTime;
+                // transform.position += displacementVector;
+
                 targetPosition = transform.position + cameraRotator.transform.right * 2f;
                 startPosition = transform.position;
                 moving = true;
