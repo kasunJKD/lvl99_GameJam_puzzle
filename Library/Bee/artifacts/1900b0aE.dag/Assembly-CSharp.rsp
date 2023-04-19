@@ -361,6 +361,7 @@
 "Assets/Scripts/CameraRotation.cs"
 "Assets/Scripts/CameraRotationTrigger.cs"
 "Assets/Scripts/Direction.cs"
+"Assets/Scripts/MainMenu/GameOver.cs"
 "Assets/Scripts/MainMenu/MainMenu.cs"
 "Assets/Scripts/MainMenu/PauseMenu.cs"
 "Assets/Scripts/MainMenu/SettingsMenu.cs"
