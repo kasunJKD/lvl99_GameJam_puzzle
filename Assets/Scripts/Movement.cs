@@ -57,12 +57,12 @@ public class Movement : MonoBehaviour
     bool playerTurned_s = false;
     bool playerTurned_d = false;
 
-    private void Start() {
+    public void Start() {
         objectmoveStatus = GetComponent<MoveStatus>();
     }
 
 
-    void Update() {
+    public void Update() {
         // Set the ray positions every frame
 
         yOffset = transform.position + Vector3.up * rayOffsetY;
@@ -186,11 +186,14 @@ public class Movement : MonoBehaviour
             if (selectedObject != null && !objectmoveStatus.isMovingObject)
             {
                 objectmoveStatus.isMovingObject = true;
+                selectedObject.GetComponent<Transform>().SetParent(transform);
+                selectedObject.GetComponent<Transform>().rotation = Quaternion.LookRotation(transform.forward, transform.up);
 
             }
             else if (selectedObject != null && objectmoveStatus.isMovingObject)
             {
                 objectmoveStatus.isMovingObject = false;
+                selectedObject.GetComponent<Transform>().SetParent(null, true);
                // Transform objectTransform = GetComponent<Transform>();
                // transform.DetachChildren();
             }
@@ -365,22 +368,22 @@ public class Movement : MonoBehaviour
     bool CanMove(Vector3 direction) {
         Debug.Log(objectmoveStatus.isMovingObject);
         if (objectmoveStatus.isMovingObject) {
-            int layerToFind = 6; // Replace with the desired layer number
-            Transform childTransform = null;
+            // int layerToFind = 6; // Replace with the desired layer number
+            // Transform childTransform = null;
 
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                Transform currentChild = transform.GetChild(i);
-                if (currentChild.gameObject.layer == layerToFind)
-                {
-                    childTransform = currentChild;
-                    break;
-                }
-            }
+            // for (int i = 0; i < transform.childCount; i++)
+            // {
+            //     Transform currentChild = transform.GetChild(i);
+            //     if (currentChild.gameObject.layer == layerToFind)
+            //     {
+            //         childTransform = currentChild;
+            //         break;
+            //     }
+            // }
 
-            Vector3 directionToChild = childTransform.position;
-            Quaternion targetRotation = Quaternion.LookRotation(directionToChild);
-            transform.rotation = targetRotation;
+            // Vector3 directionToChild = childTransform.position;
+            // Quaternion targetRotation = Quaternion.LookRotation(directionToChild);
+            // transform.rotation = targetRotation;
 
             // if (direction.z != 0) {
             //     if (Physics.Raycast(zAxisOriginA, direction, 3.0f)) return false;
@@ -406,8 +409,8 @@ public class Movement : MonoBehaviour
 
         }
         else {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = targetRotation; 
+            // Quaternion targetRotation = Quaternion.LookRotation(direction);
+            // transform.rotation = targetRotation; 
             if (direction.z != 0) {
                 if (Physics.Raycast(zAxisOriginA, direction, rayLength)) return false;
                 if (Physics.Raycast(zAxisOriginB, direction, rayLength)) return false;         

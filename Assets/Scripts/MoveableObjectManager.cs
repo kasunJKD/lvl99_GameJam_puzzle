@@ -94,42 +94,42 @@ public class MoveableObjectManager : MonoBehaviour
 
         player = GameObject.Find("Player");
         playerpickedup = player.GetComponent<MoveStatus>();
-        if (playerpickedup.isMovingObject) {
-            // if (Input.GetKeyDown(KeyCode.W)) {
-            //     if (CanMove(Vector3.forward)) {
-            //         targetPosition = transform.position * 2f;
-            //         startPosition = transform.position;
+        // if (playerpickedup.isMovingObject) {
+        //     // if (Input.GetKeyDown(KeyCode.W)) {
+        //     //     if (CanMove(Vector3.forward)) {
+        //     //         targetPosition = transform.position * 2f;
+        //     //         startPosition = transform.position;
 
-            //         moving = true;
-            //     }
-            // } else if (Input.GetKeyDown(KeyCode.S)) {
-            //     if (CanMove(Vector3.back)) {
-            //         targetPosition = transform.position * 2f;
-            //         startPosition = transform.position;
-            //         moving = true;
-            //     }
-            // } else if (Input.GetKeyDown(KeyCode.A)) {
-            //     if (CanMove(Vector3.left)) {
-            //         targetPosition = transform.position * 2f;
-            //         startPosition = transform.position;
-            //         moving = true;
-            //     }
-            // } else if (Input.GetKeyDown(KeyCode.D)) {
-            //     if (CanMove(Vector3.right)) {
-            //         targetPosition = transform.position * 2f;
-            //         startPosition = transform.position;
-            //         moving = true;
-            //     }
-            // }
-            Transform objectTransform = GetComponent<Transform>();
-            objectTransform.SetParent(player.transform);
-            objectTransform.rotation = Quaternion.LookRotation(player.transform.forward, player.transform.up);
-        }
-        else 
-        {
-            Transform objectTransform = GetComponent<Transform>();
-            objectTransform.SetParent(null, true);
-        }
+        //     //         moving = true;
+        //     //     }
+        //     // } else if (Input.GetKeyDown(KeyCode.S)) {
+        //     //     if (CanMove(Vector3.back)) {
+        //     //         targetPosition = transform.position * 2f;
+        //     //         startPosition = transform.position;
+        //     //         moving = true;
+        //     //     }
+        //     // } else if (Input.GetKeyDown(KeyCode.A)) {
+        //     //     if (CanMove(Vector3.left)) {
+        //     //         targetPosition = transform.position * 2f;
+        //     //         startPosition = transform.position;
+        //     //         moving = true;
+        //     //     }
+        //     // } else if (Input.GetKeyDown(KeyCode.D)) {
+        //     //     if (CanMove(Vector3.right)) {
+        //     //         targetPosition = transform.position * 2f;
+        //     //         startPosition = transform.position;
+        //     //         moving = true;
+        //     //     }
+        //     // }
+        //     Transform objectTransform = GetComponent<Transform>();
+        //     objectTransform.SetParent(player.transform);
+        //     objectTransform.rotation = Quaternion.LookRotation(player.transform.forward, player.transform.up);
+        // }
+        // else 
+        // {
+        //     Transform objectTransform = GetComponent<Transform>();
+        //     objectTransform.SetParent(null, true);
+        // }
             
 
     }
