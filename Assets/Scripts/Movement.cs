@@ -181,7 +181,7 @@ public class Movement : MonoBehaviour
 
         // Handle player input
         // Also handle moving up 1 level
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && (MovementSystem.enableInput))
         {
             if (selectedObject != null && !objectmoveStatus.isMovingObject)
             {
@@ -199,7 +199,7 @@ public class Movement : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.W)) {
+        if (Input.GetKeyDown(KeyCode.W) && (MovementSystem.enableInput)) {
             if (objectmoveStatus.isMovingObject) {
                 targetPosition = transform.position + cameraRotator.transform.forward * 2f;
                 startPosition = transform.position;
@@ -231,7 +231,7 @@ public class Movement : MonoBehaviour
 
             //     moving = true;
             // }
-        } else if (Input.GetKeyDown(KeyCode.S)) {
+        } else if (Input.GetKeyDown(KeyCode.S) && (MovementSystem.enableInput)) {
             if (objectmoveStatus.isMovingObject) {
                 targetPosition = transform.position - cameraRotator.transform.forward * 2f;
                 startPosition = transform.position;
@@ -259,7 +259,7 @@ public class Movement : MonoBehaviour
             //     startPosition = transform.position;
             //     moving = true;
             // } 
-        } else if (Input.GetKeyDown(KeyCode.A)) {
+        } else if (Input.GetKeyDown(KeyCode.A) && (MovementSystem.enableInput)) {
             if (objectmoveStatus.isMovingObject) {
                 targetPosition = transform.position - cameraRotator.transform.right * 2f;
                 startPosition = transform.position;
@@ -288,7 +288,7 @@ public class Movement : MonoBehaviour
             //     moving = true;
             // } 
             
-        } else if (Input.GetKeyDown(KeyCode.D)) {
+        } else if (Input.GetKeyDown(KeyCode.D) && (MovementSystem.enableInput)) {
             if (objectmoveStatus.isMovingObject) {
                 targetPosition = transform.position + cameraRotator.transform.right * 2f;
                 startPosition = transform.position;

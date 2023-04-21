@@ -7,6 +7,7 @@ public class CountDown : MonoBehaviour
 {
     public int countdownTime;
     public Text countDownDisplay;
+    bool countdownover;
 
     private void Start()
     {
@@ -17,6 +18,7 @@ public class CountDown : MonoBehaviour
     {
         while(countdownTime > 0)
         {
+            GameManager.instance.DisableInput();
             countDownDisplay.text = countdownTime.ToString();
 
             yield return new WaitForSeconds(1f);
@@ -26,10 +28,13 @@ public class CountDown : MonoBehaviour
 
         countDownDisplay.text = "GO!";
 
-        GameManager.instance.WaterStartRisingAndTimer(); //todo
+        GameManager.instance.EnableInput();
+        GameManager.instance.LiftWaterLevel();
 
         yield return new WaitForSeconds(1f);
 
         countDownDisplay.gameObject.SetActive(false);
+
     }
+
 }

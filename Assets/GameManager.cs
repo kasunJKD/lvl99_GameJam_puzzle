@@ -5,6 +5,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    private WaterLiftSystem waterLiftSystem;
+    private StopWatch stopWatch;
+    private HealthSystem healthSystem;
+    private MovementSystem movementsys;
+
+    public float currentTime;
 
     private void Awake() 
     {
@@ -15,14 +21,37 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        waterLiftSystem = gameObject.GetComponent<WaterLiftSystem>();
+        stopWatch = gameObject.GetComponent<StopWatch>();
+        healthSystem = gameObject.GetComponent<HealthSystem>();
+        movementsys = gameObject.GetComponent<MovementSystem>();
     }
     
     public void Start()
     {
-        Debug.Log(WaterStartRisingAndTimer());
+        stopWatch.SetCurrentTime(currentTime);
+        waterLiftSystem.SetCurrentTime(currentTime);
     }
 
-    public string WaterStartRisingAndTimer() {
-        return "water Start rising and start rising timer";
+    public void LiftWaterLevel () {
+        startStopWatch();
+        waterLiftSystem.canLift();
+    }
+
+    public void startStopWatch () {
+        stopWatch.canStartWatch();
+    }
+
+    public void takeDamage() {
+        healthSystem.TakeDamage();
+    }
+
+    public void DisableInput() {
+        movementsys.DisableInput();
+    }
+
+    public void EnableInput() {
+        movementsys.EnableInput();
     }
 }

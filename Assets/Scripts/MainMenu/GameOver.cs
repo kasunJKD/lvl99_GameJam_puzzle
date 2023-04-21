@@ -2,10 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameOver : MonoBehaviour
 {
     public GameObject gameOverUI;
+    public Slider healthbar;
+
+    void Update()
+    {
+        if(healthbar.value == 0f) {
+            PlayerDead();
+        }
+    }
 
     public void Retry()
     {
@@ -20,6 +29,7 @@ public class GameOver : MonoBehaviour
     }
 
     public void PlayerDead() {
+        GameManager.instance.DisableInput();
         Debug.Log("Player Dead");
         gameOverUI.SetActive(true);
     }
