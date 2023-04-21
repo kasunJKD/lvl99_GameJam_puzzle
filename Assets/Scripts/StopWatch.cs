@@ -47,7 +47,6 @@ public class StopWatch : MonoBehaviour
     }
 
     public void startStopWatch() {
-        Debug.Log(currentTime + " stopwatch time");
         currentTime = countDown ? currentTime -= Time.deltaTime : currentTime += Time.deltaTime;
 
         if (hasLimit && ((countDown && currentTime <= timerLimit) || (!countDown && currentTime >= timerLimit)))
@@ -58,5 +57,9 @@ public class StopWatch : MonoBehaviour
         }
 
         SetTimeText();
+    }
+
+    public void stopStopWatch() {
+        canstart = false;
     }
 }

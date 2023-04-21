@@ -27,6 +27,14 @@ public class Movement : MonoBehaviour
     Vector3 xAxisOriginA;
     Vector3 xAxisOriginB;
 
+    Vector3 xOffsetc;
+    Vector3 yOffsetc;
+    Vector3 zOffsetc;
+    Vector3 zAxisOriginAc;
+    Vector3 zAxisOriginBc;
+    Vector3 xAxisOriginAc;
+    Vector3 xAxisOriginBc;
+
     [SerializeField]
     Transform cameraRotator = null;
 
@@ -48,9 +56,12 @@ public class Movement : MonoBehaviour
     private MoveStatus objectmoveStatus;
 
     private GameObject selectedObject;
+    private GameObject childObject;
 
     [SerializeField]
     LayerMask moveableLayer;
+    [SerializeField]
+    LayerMask colidable;
 
     bool playerTurned_w = false;
     bool playerTurned_a = false;
@@ -121,8 +132,119 @@ public class Movement : MonoBehaviour
                 Color.red,
                 Time.deltaTime);
 
+
+        // Debug.DrawLine(
+        //         MoveableObjectManager.zAxisOriginA,
+        //         MoveableObjectManager.zAxisOriginA + Vector3.forward * rayLength,
+        //         Color.green,
+        //         Time.deltaTime);
+        // Debug.DrawLine(
+        //         MoveableObjectManager.zAxisOriginB,
+        //         MoveableObjectManager.zAxisOriginB + Vector3.forward * rayLength,
+        //         Color.green,
+        //         Time.deltaTime);
+
+        // Debug.DrawLine(
+        //         MoveableObjectManager.zAxisOriginA,
+        //         MoveableObjectManager.zAxisOriginA + Vector3.back * rayLength,
+        //         Color.green,
+        //         Time.deltaTime);
+        // Debug.DrawLine(
+        //         MoveableObjectManager.zAxisOriginB,
+        //         MoveableObjectManager.zAxisOriginB + Vector3.back * rayLength,
+        //         Color.green,
+        //         Time.deltaTime);
+
+        // Debug.DrawLine(
+        //         MoveableObjectManager.xAxisOriginA,
+        //         MoveableObjectManager.xAxisOriginA + Vector3.left * rayLength,
+        //         Color.green,
+        //         Time.deltaTime);
+        // Debug.DrawLine(
+        //         MoveableObjectManager.xAxisOriginB,
+        //         MoveableObjectManager.xAxisOriginB + Vector3.left * rayLength,
+        //         Color.green,
+        //         Time.deltaTime);
+
+        // Debug.DrawLine(
+        //         MoveableObjectManager.xAxisOriginA,
+        //         MoveableObjectManager.xAxisOriginA + Vector3.right * rayLength,
+        //         Color.green,
+        //         Time.deltaTime);
+        // Debug.DrawLine(
+        //         MoveableObjectManager.xAxisOriginB,
+        //         MoveableObjectManager.xAxisOriginB + Vector3.right * rayLength,
+        //         Color.green,
+        //         Time.deltaTime);
+        
+
         // Debug raycast line
         Debug.DrawLine(transform.position + Vector3.up, transform.position  + Vector3.up + transform.forward * rayLength, Color.red, Time.deltaTime);
+
+       // Debug.DrawLine(transform.position + Vector3.up, transform.position  + Vector3.up + transform.forward * 3.5f, Color.green, Time.deltaTime);
+        
+        childObject = FindChildWithTag(transform, "Moveable");
+        if (childObject != null) {
+            yOffsetc = childObject.transform.position + Vector3.up * 0.5f;
+            zOffsetc = Vector3.forward * 0.5f;
+            xOffsetc = Vector3.right * 0.5f;
+
+            zAxisOriginAc = yOffsetc + xOffsetc;
+            zAxisOriginBc = yOffsetc - xOffsetc;
+
+            xAxisOriginAc = yOffsetc + zOffsetc;
+            xAxisOriginBc = yOffsetc - zOffsetc;
+
+            // Draw Debug Rays
+            
+            Debug.DrawLine(
+                    zAxisOriginAc,
+                    zAxisOriginAc + Vector3.forward * rayLength,
+                    Color.green,
+                    Time.deltaTime);
+            Debug.DrawLine(
+                    zAxisOriginBc,
+                    zAxisOriginBc + Vector3.forward * rayLength,
+                    Color.green,
+                    Time.deltaTime);
+
+            Debug.DrawLine(
+                    zAxisOriginAc,
+                    zAxisOriginAc + Vector3.back * rayLength,
+                    Color.green,
+                    Time.deltaTime);
+            Debug.DrawLine(
+                    zAxisOriginBc,
+                    zAxisOriginBc + Vector3.back * rayLength,
+                    Color.green,
+                    Time.deltaTime);
+
+            Debug.DrawLine(
+                    xAxisOriginAc,
+                    xAxisOriginAc + Vector3.left * rayLength,
+                    Color.green,
+                    Time.deltaTime);
+            Debug.DrawLine(
+                    xAxisOriginBc,
+                    xAxisOriginBc + Vector3.left * rayLength,
+                    Color.green,
+                    Time.deltaTime);
+
+            Debug.DrawLine(
+                    xAxisOriginAc,
+                    xAxisOriginAc + Vector3.right * rayLength,
+                    Color.green,
+                    Time.deltaTime);
+            Debug.DrawLine(
+                    xAxisOriginBc,
+                    xAxisOriginBc + Vector3.right * rayLength,
+                    Color.green,
+                    Time.deltaTime);
+
+           // Debug.DrawLine(childObject.transform.position, childObject.transform.position  + Vector3.up + childObject.transform.forward * rayLength, Color.green, Time.deltaTime);
+        }
+        
+
 
         if (falling) {
             if (transform.position.y <= targetFallHeight) {
@@ -188,7 +310,6 @@ public class Movement : MonoBehaviour
                 objectmoveStatus.isMovingObject = true;
                 selectedObject.GetComponent<Transform>().SetParent(transform);
                 selectedObject.GetComponent<Transform>().rotation = Quaternion.LookRotation(transform.forward, transform.up);
-
             }
             else if (selectedObject != null && objectmoveStatus.isMovingObject)
             {
@@ -203,7 +324,11 @@ public class Movement : MonoBehaviour
             if (objectmoveStatus.isMovingObject) {
                 targetPosition = transform.position + cameraRotator.transform.forward * 2f;
                 startPosition = transform.position;
-
+                
+                //  if (CanMove(Vector3.forward)) {
+                //     moving = true;
+                // }
+                // else moving = false;
                 moving = true;
             }
             else if (playerTurned_w) {
@@ -232,9 +357,14 @@ public class Movement : MonoBehaviour
             //     moving = true;
             // }
         } else if (Input.GetKeyDown(KeyCode.S) && (MovementSystem.enableInput)) {
+            
             if (objectmoveStatus.isMovingObject) {
                 targetPosition = transform.position - cameraRotator.transform.forward * 2f;
                 startPosition = transform.position;
+                //  if (CanMove(Vector3.forward)) {
+                //     moving = true;
+                // }
+                // else moving = false;
                 moving = true;
             }
             else if (playerTurned_s) {
@@ -263,6 +393,10 @@ public class Movement : MonoBehaviour
             if (objectmoveStatus.isMovingObject) {
                 targetPosition = transform.position - cameraRotator.transform.right * 2f;
                 startPosition = transform.position;
+                //  if (CanMove(Vector3.forward)) {
+                //     moving = true;
+                // }
+                // else moving = false;
                 moving = true;
             }
             else if (playerTurned_a) {
@@ -292,13 +426,16 @@ public class Movement : MonoBehaviour
             if (objectmoveStatus.isMovingObject) {
                 targetPosition = transform.position + cameraRotator.transform.right * 2f;
                 startPosition = transform.position;
+                // if (CanMove(Vector3.forward)) {
+                //     moving = true;
+                // }
+                // else moving = false;
                 moving = true;
             }
             else if (playerTurned_d) {
                 //pauseing with delta time *(need delta time to pause)
                 // Vector3 displacementVector = (targetPosition - startPosition) * Time.deltaTime;
                 // transform.position += displacementVector;
-
                 targetPosition = transform.position + cameraRotator.transform.right * 2f;
                 startPosition = transform.position;
                 if (CanMove(Vector3.right)) {
@@ -366,46 +503,43 @@ public class Movement : MonoBehaviour
     // Check if the player can move
 
     bool CanMove(Vector3 direction) {
-        Debug.Log(objectmoveStatus.isMovingObject);
         if (objectmoveStatus.isMovingObject) {
-            // int layerToFind = 6; // Replace with the desired layer number
-            // Transform childTransform = null;
 
-            // for (int i = 0; i < transform.childCount; i++)
-            // {
-            //     Transform currentChild = transform.GetChild(i);
-            //     if (currentChild.gameObject.layer == layerToFind)
-            //     {
-            //         childTransform = currentChild;
-            //         break;
-            //     }
-            // }
+           RaycastHit hit;
+            if (Physics.Raycast(childObject.transform.position + Vector3.up, childObject.transform.forward, out hit, 2.0f, moveableLayer))
+            {
+               return false;
+            }
+            else if (Physics.Raycast(transform.position + Vector3.up, -transform.forward, out hit, 2.0f, moveableLayer))
+            {
+               return false;
+            } 
+            else if (Physics.Raycast(childObject.transform.position + Vector3.up, childObject.transform.right, out hit, 2.0f, moveableLayer))
+            {
+               return false;
+            }
+            else if (Physics.Raycast(childObject.transform.position + Vector3.up, -childObject.transform.right, out hit, 2.0f, moveableLayer))
+            {
+               return false;
+            }
+            else if (Physics.Raycast(childObject.transform.position + Vector3.up, childObject.transform.forward, out hit, 2.0f, LayerMask.GetMask("Colidable")))
+            {
+               return false;
+            }
+            else if (Physics.Raycast(transform.position + Vector3.up, -transform.forward, out hit, 2.0f, LayerMask.GetMask("Colidable")))
+            {
+               return false;
+            } 
+            else if (Physics.Raycast(childObject.transform.position + Vector3.up, childObject.transform.right, out hit, 2.0f, LayerMask.GetMask("Colidable")))
+            {
+               return false;
+            }
+            else if (Physics.Raycast(childObject.transform.position + Vector3.up, -childObject.transform.right, out hit, 2.0f, LayerMask.GetMask("Colidable")))
+            {
+               return false;
+            }
 
-            // Vector3 directionToChild = childTransform.position;
-            // Quaternion targetRotation = Quaternion.LookRotation(directionToChild);
-            // transform.rotation = targetRotation;
-
-            // if (direction.z != 0) {
-            //     if (Physics.Raycast(zAxisOriginA, direction, 3.0f)) return false;
-            //     if (Physics.Raycast(zAxisOriginB, direction, 3.0f)) return false;         
-            // }
-            // else if (direction.x != 0) {
-            //     if (Physics.Raycast(xAxisOriginA, direction, rayLength)) return false;
-            //     if (Physics.Raycast(xAxisOriginB, direction, rayLength)) return false;
-            // }
             return true;
-
-            // Quaternion targetRotation = Quaternion.LookRotation(direction);
-            // transform.rotation = targetRotation; 
-            // if (direction.z != 0) {
-            //     if (Physics.Raycast(zAxisOriginA, direction, rayLength)) return false;
-            //     if (Physics.Raycast(zAxisOriginB, direction, rayLength)) return false;         
-            // }
-            // else if (direction.x != 0) {
-            //     if (Physics.Raycast(xAxisOriginA, direction, rayLength)) return false;
-            //     if (Physics.Raycast(xAxisOriginB, direction, rayLength)) return false;
-            // }
-            // return true;
 
         }
         else {
@@ -443,6 +577,26 @@ public class Movement : MonoBehaviour
         playerTurned_a = a;
         playerTurned_s = s;
         playerTurned_d = d; 
+    }
+
+    public static GameObject FindChildWithTag(Transform parent, string layerName)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.gameObject.layer == LayerMask.NameToLayer(layerName))
+            {
+                return child.gameObject;
+            }
+            else
+            {
+                GameObject obj = FindChildWithTag(child, layerName);
+                if (obj != null)
+                {
+                    return obj;
+                }
+            }
+        }
+        return null;
     }
 
     // void OnCollisionEnter(Collision other) {

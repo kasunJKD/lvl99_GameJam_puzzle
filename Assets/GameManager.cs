@@ -54,4 +54,9 @@ public class GameManager : MonoBehaviour
     public void EnableInput() {
         movementsys.EnableInput();
     }
+
+    public void StopWaterLevel () {
+        stopWatch.stopStopWatch();
+        waterLiftSystem.cannotLift();
+    }
 }

@@ -41,6 +41,10 @@ public class WaterLiftSystem : MonoBehaviour
         lift = true;
     }
 
+    public void cannotLift () {
+        lift = false;
+    }
+
     public void SetCurrentTime(float time){
         timer = time;
     } 

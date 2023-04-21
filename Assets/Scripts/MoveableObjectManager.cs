@@ -11,10 +11,10 @@ public class MoveableObjectManager : MonoBehaviour
     Vector3 xOffset;
     Vector3 yOffset;
     Vector3 zOffset;
-    Vector3 zAxisOriginA;
-    Vector3 zAxisOriginB;
-    Vector3 xAxisOriginA;
-    Vector3 xAxisOriginB;
+    public static Vector3 zAxisOriginA;
+    public static Vector3 zAxisOriginB;
+    public static Vector3 xAxisOriginA;
+    public static Vector3 xAxisOriginB;
 
     [SerializeField]
     LayerMask walkableMask = 0;
@@ -34,8 +34,8 @@ public class MoveableObjectManager : MonoBehaviour
 
     void Update() {
          // Set the ray positions every frame
-
-        yOffset = transform.position + Vector3.up * 0.9f;
+        
+        yOffset = transform.position * 0.9f;
         zOffset = Vector3.forward * 0.9f;
         xOffset = Vector3.right * 0.9f;
 

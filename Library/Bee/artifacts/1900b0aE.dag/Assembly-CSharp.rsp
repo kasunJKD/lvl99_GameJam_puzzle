@@ -368,6 +368,7 @@
 "Assets/Scripts/Direction.cs"
 "Assets/Scripts/HealthSystem.cs"
 "Assets/Scripts/MainMenu/GameOver.cs"
+"Assets/Scripts/MainMenu/LevelComplete.cs"
 "Assets/Scripts/MainMenu/MainMenu.cs"
 "Assets/Scripts/MainMenu/PauseMenu.cs"
 "Assets/Scripts/MainMenu/SettingsMenu.cs"
@@ -375,7 +376,7 @@
 "Assets/Scripts/Movement.cs"
 "Assets/Scripts/MovementSystem.cs"
 "Assets/Scripts/MoveStatus.cs"
-"Assets/Scripts/PlayerHp.cs"
+"Assets/Scripts/Portal.cs"
 "Assets/Scripts/StopWatch.cs"
 "Assets/Scripts/WaterLiftSystem.cs"
 -langversion:9.0
