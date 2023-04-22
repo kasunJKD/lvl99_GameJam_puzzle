@@ -18,17 +18,20 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float hor = Input.GetAxis("Horizontal");
-        float ver = Input.GetAxis("Vertical");
-
-        Vector3 movement = new Vector3(hor, 0, ver) * Time.deltaTime * speed;
-
-        controller.Move(movement);
-
-        if (movement != Vector3.zero)
+        if (MovementSystem.enableInput)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), rotationSpeed * Time.deltaTime);
-        }
+            float hor = Input.GetAxis("Horizontal");
+            float ver = Input.GetAxis("Vertical");
 
+
+            Vector3 movement = new Vector3(hor, 0, ver) * Time.deltaTime * speed;
+
+            controller.Move(movement);
+
+            if (movement != Vector3.zero)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), rotationSpeed * Time.deltaTime);
+            }
+        }
     }
 }
