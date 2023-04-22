@@ -344,7 +344,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 292327366}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0caa31d392f8a684f963bba42967ddf1, type: 3}
   m_Name: 
@@ -423,6 +423,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f203370891e2bd4409914548c3c5d32a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &292327374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292327366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 672e49a776b3e2049a627ac9b95b7b82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forceMagnitude: 0.5
+--- !u!114 &292327375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292327366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8a2d38b5563a30448b5a01bf418f44f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 292327371}
+  speed: 3
+  rotationSpeed: 20
 --- !u!1 &299906256
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,8 +518,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 299906256}
-  m_LocalRotation: {x: -0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: -14.2, z: -5.64}
+  m_LocalRotation: {x: -0.016065333, y: -0.27246556, z: 0.0045195064, w: -0.9620208}
+  m_LocalPosition: {x: -2.1291218, y: -6.5787487, z: -7.0642023}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5735,6 +5763,14 @@ PrefabInstance:
     - target: {fileID: 3168977046900056992, guid: 250765a27d15b93419259b08b286567b, type: 3}
       propertyPath: collidableMask.m_Bits
       value: 321
+      objectReference: {fileID: 0}
+    - target: {fileID: 3168977046900056994, guid: 250765a27d15b93419259b08b286567b, type: 3}
+      propertyPath: m_Mass
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3168977046900056994, guid: 250765a27d15b93419259b08b286567b, type: 3}
+      propertyPath: m_Constraints
+      value: 112
       objectReference: {fileID: 0}
     - target: {fileID: 3168977046900057002, guid: 250765a27d15b93419259b08b286567b, type: 3}
       propertyPath: m_Name
