@@ -11,7 +11,8 @@ public class LevelComplete : MonoBehaviour
     public void MainMenu()
     {
        gameOverUI.SetActive(false);
-       SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+       SceneManager.LoadScene("MainMenu");
+       //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
     public void NextLevel()
@@ -22,5 +23,6 @@ public class LevelComplete : MonoBehaviour
 
     public void portaltriggerd() {
          gameOverUI.SetActive(true);
+         
     }
 }

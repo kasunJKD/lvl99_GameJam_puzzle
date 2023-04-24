@@ -20,7 +20,10 @@ public class HealthSystem : MonoBehaviour
     //maybe remove the player with game over
     public static float currentHealth;
 
-    private bool isTakingDamage = false;
+    public static bool isTakingDamage = false;
+
+
+      Coroutine co;
 
     // Start is called before the first frame update
     private void Start()
@@ -37,17 +40,22 @@ public class HealthSystem : MonoBehaviour
     //call this in another script
     public void TakeDamage()
     {
-        if (!isTakingDamage) // Only start taking damage if we're not already taking damage
-        {
-            isTakingDamage = true; // Set the flag to true
 
-            StartCoroutine(ReduceHealthOverTime()); // Start the coroutine to reduce health over time
-        }
+        Debug.Log("TakeDamage");
+            if (!isTakingDamage) // Only start taking damage if we're not already taking damage
+            {
+                isTakingDamage = true; // Set the flag to true
+
+                co = StartCoroutine(ReduceHealthOverTime()); // Start the coroutine to reduce health over time
+            }
+        
+        
     }
 
     private IEnumerator ReduceHealthOverTime()
     {
-        while (currentHealth > 0) // Keep reducing health until it reaches 0
+        Debug.Log("ReduceHealthOverTime");
+            while (currentHealth > 0) // Keep reducing health until it reaches 0
         {
             currentHealth -= damage;
 
@@ -55,6 +63,16 @@ public class HealthSystem : MonoBehaviour
         }
 
         isTakingDamage = false; // Set the flag to false when we're done taking damage
+        
+        
+    }
+
+    public void NoTakeDamage()
+    {
+        Debug.Log("NoTakeDamage");
+        if (co != null){
+            StopCoroutine(co);
+        }     
     }
 }
 

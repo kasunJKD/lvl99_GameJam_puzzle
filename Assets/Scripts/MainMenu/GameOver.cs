@@ -25,12 +25,12 @@ public class GameOver : MonoBehaviour
     public void MainMenu()
     {
        gameOverUI.SetActive(false);
-       SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+       SceneManager.LoadScene("MainMenu");
+       //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
     public void PlayerDead() {
         GameManager.instance.DisableInput();
-        Debug.Log("Player Dead");
         gameOverUI.SetActive(true);
     }
 }

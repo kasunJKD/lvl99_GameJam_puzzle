@@ -15,6 +15,7 @@ public class Portal : MonoBehaviour
             LevelComplete.SetActive(true);
             GameManager.instance.DisableInput();
             GameManager.instance.StopWaterLevel();
+            GameManager.instance.notakeDamage();
         }
     }
 }

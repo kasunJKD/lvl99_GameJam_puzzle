@@ -59,4 +59,9 @@ public class GameManager : MonoBehaviour
         stopWatch.stopStopWatch();
         waterLiftSystem.cannotLift();
     }
+
+    public void notakeDamage() {
+        Debug.Log("notakeDamage");
+        healthSystem.NoTakeDamage();
+    }
 }

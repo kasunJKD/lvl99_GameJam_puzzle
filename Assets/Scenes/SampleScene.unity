@@ -521,7 +521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 292327371}
-  speed: 4
+  speed: 7
   rotationSpeed: 15
 --- !u!1 &299906256
 GameObject:
